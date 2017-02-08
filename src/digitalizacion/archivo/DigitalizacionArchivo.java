@@ -1,13 +1,22 @@
-
 package digitalizacion.archivo;
+
+import java.awt.EventQueue;
+import javax.swing.JFrame;
+import org.jvnet.substance.SubstanceLookAndFeel;
 
 public class DigitalizacionArchivo {
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
-        // TODO code application logic here
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    JFrame.setDefaultLookAndFeelDecorated(true);
+                    SubstanceLookAndFeel.setSkin("org.jvnet.substance.skin.NebulaSkin");
+                } catch (Exception e) {
+                }
+
+                //new Portada().setVisible(true);
+            }
+        });
     }
-    
 }
