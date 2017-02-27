@@ -220,9 +220,9 @@ public class Digitalizados extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-       String[] titulos={"id","Numero","Folio","Matricula","Nombre","Paterno","Materno","Plantel","Generacion"};
-       String[] registros = new String [9];
-       String sql="SELECT * FROM alumno WHERE (nombre like '%"+txtBnombre.getText()+"%')"+
+       String[] titulos={"Folio","Matricula","Nombre","Paterno","Materno","Plantel","Generacion"};
+       String[] registros = new String [7];
+       String sql="SELECT * FROM cobat WHERE (nombre like '%"+txtBnombre.getText()+"%')"+
                "and (paterno like '%"+txtBpaterno.getText()+"%')"+
                "and (materno like '%"+txtBmaterno.getText()+"%')"+
                "and (plantel like '%"+txtBplantel.getText()+"%')"+
@@ -237,15 +237,13 @@ public class Digitalizados extends javax.swing.JFrame {
        table = cn.createStatement();
        ResultSet rs=table.executeQuery(sql);
        while (rs.next()){
-           registros[0]=rs.getString("id");
-           registros[1]=rs.getString("numero");
-           registros[2]=rs.getString("folio");
-           registros[3]=rs.getString("matricula");
-           registros[4]=rs.getString("nombre");
-           registros[5]=rs.getString("paterno");
-           registros[6]=rs.getString("materno");
-           registros[7]=rs.getString("plantel");
-           registros[8]=rs.getString("periodo");
+           registros[0]=rs.getString("folio");
+           registros[1]=rs.getString("matricula");
+           registros[2]=rs.getString("nombre");
+           registros[3]=rs.getString("paterno");
+           registros[4]=rs.getString("materno");
+           registros[5]=rs.getString("plantel");
+           registros[6]=rs.getString("periodo");
            
            modelo.addRow(registros);
            conteo++;
@@ -280,7 +278,7 @@ public class Digitalizados extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void tablaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaMouseClicked
-       if (evt.getClickCount()==2){
+      /* if (evt.getClickCount()==2){
           int fila = tabla.getSelectedRow();
         if (fila>=0){
             try {
@@ -310,7 +308,7 @@ public class Digitalizados extends javax.swing.JFrame {
             }
 
         } 
-       }
+       }*/
     }//GEN-LAST:event_tablaMouseClicked
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
@@ -319,19 +317,20 @@ public class Digitalizados extends javax.swing.JFrame {
         int fila = tabla.getSelectedRow();
         if (fila>=0){
             try {
-                String sql="SELECT * FROM alumno WHERE (folio='"+tabla.getValueAt(fila, 2).toString()+"') and (matricula='"+
-                tabla.getValueAt(fila, 3).toString()+"')and (numero='"+
+                String sql="SELECT * FROM cobat WHERE (folio='"+tabla.getValueAt(fila, 0).toString()+"') and (matricula='"+
                 tabla.getValueAt(fila, 1).toString()+"')and (plantel='"+
-                tabla.getValueAt(fila, 7).toString()+"')and (periodo='"+
-                tabla.getValueAt(fila, 8).toString()+"')";
+                tabla.getValueAt(fila, 5).toString()+"')and (periodo='"+
+                tabla.getValueAt(fila, 6).toString()+"')and (nombre='"+
+                tabla.getValueAt(fila, 2).toString()+"')and (paterno='"+
+                tabla.getValueAt(fila, 3).toString()+"')and (materno='"+
+                tabla.getValueAt(fila, 4).toString()+"')";
+                System.out.println (sql);
                 Statement st;
                 st = cn.createStatement();
                 ResultSet rs=st.executeQuery(sql);
                 while (rs.next()){
-                    File path = new File ("c:/sicap/certificados/"+rs.getString("plantel")+"/"+rs.getString("periodo")+"/"+
-                        rs.getString("numero")+"-"+rs.getString("matricula")+".pdf");
-                    //System.out.println ("c:/sicap/certificados/"+rs.getString("plantel")+"/"+rs.getString("periodo")+"/"+
-                        //        rs.getString("numero")+"-"+rs.getString("matricula")+".pdf");
+                    File path = new File ("c:/sicap/"+rs.getString("plantel")+"/"+rs.getString("idCobat")+".pdf");
+                    
                     try {
                         Desktop.getDesktop().open(path);
                     } catch (IOException ex) {
@@ -389,42 +388,13 @@ public class Digitalizados extends javax.swing.JFrame {
         });
     }
     
-    /*public void mostrarEstudiante(){
-        
-        // lee los estudiantes de la previa base de datos
-        try {
-           String sql="SELECT * FROM estudiante ORDER By id DESC ";
-           Statement st;
-           st = cn.createStatement();
-           ResultSet rs=st.executeQuery(sql);
-            while (rs.next()){
-               txtId.setText(rs.getString("id"));
-               conteo=Integer.parseInt(rs.getString("id"));
-               limite=Integer.parseInt(rs.getString("id"));
-               txtFolio.setText(rs.getString("folio"));
-               txtMatricula.setText(rs.getString("matricula"));
-               txtNombre.setText(rs.getString("nombre"));
-               txtPaterno.setText(rs.getString("paterno"));
-               txtMaterno.setText(rs.getString("materno"));
-               txtPlantel.setText(rs.getString("plantel"));
-               txtPeriodo.setText(rs.getString("periodo"));
-               btnGrabar.setEnabled(false);
-        btnActualizar.setEnabled(false);
-               
-           }
-        } catch (SQLException ex) {
-            Logger.getLogger(Digitalizados.class.getName()).log(Level.SEVERE, null, ex);
-        }
-           
-    }
-    */
-    //mostrar tabla
+    
     
     void cargar(){
        // muestra datos en la tabla
-       String[] titulos={"id","Numero","Folio","Matricula","Nombre","Paterno","Materno","Plantel","Generacion"};
-       String[] registros = new String [9];
-       String sql="SELECT * FROM alumno ORDER BY id DESC";
+       String[] titulos={"Folio","Matricula","Nombre","Paterno","Materno","Plantel","Generacion"};
+       String[] registros = new String [7];
+       String sql="SELECT * FROM cobat ORDER BY idCobat DESC";
        modelo = new DefaultTableModel(null,titulos);
        
               
@@ -434,15 +404,13 @@ public class Digitalizados extends javax.swing.JFrame {
        table = cn.createStatement();
        ResultSet rs=table.executeQuery(sql);
        while (rs.next()){
-           registros[0]=rs.getString("id");
-           registros[1]=rs.getString("numero");
-           registros[2]=rs.getString("folio");
-           registros[3]=rs.getString("matricula");
-           registros[4]=rs.getString("nombre");
-           registros[5]=rs.getString("paterno");
-           registros[6]=rs.getString("materno");
-           registros[7]=rs.getString("plantel");
-           registros[8]=rs.getString("periodo");
+           registros[0]=rs.getString("folio");
+           registros[1]=rs.getString("matricula");
+           registros[2]=rs.getString("nombre");
+           registros[3]=rs.getString("paterno");
+           registros[4]=rs.getString("materno");
+           registros[5]=rs.getString("plantel");
+           registros[6]=rs.getString("periodo");
            
            modelo.addRow(registros);
            conteo++;

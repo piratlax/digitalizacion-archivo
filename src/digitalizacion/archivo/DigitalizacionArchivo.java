@@ -9,9 +9,8 @@ import org.jvnet.substance.SubstanceLookAndFeel;
 public class DigitalizacionArchivo {
 
     public static void main(String[] args) {
-        migrador clase=new migrador();
-                clase.migraDatos();
-        /*
+        
+       
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
@@ -20,10 +19,10 @@ public class DigitalizacionArchivo {
                 } catch (Exception e) {
                 }
 
-                //new Portada().setVisible(true);
+                new Portada().setVisible(true);
                 
             }
         });
-    }*/
-}
+    }
+
 }
