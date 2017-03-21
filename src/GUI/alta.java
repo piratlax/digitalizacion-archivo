@@ -218,10 +218,11 @@ public class alta extends javax.swing.JFrame {
                     .addComponent(jLabel15)
                     .addComponent(jcPlantel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnDocumento)
-                    .addComponent(txtCPdf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnGrabar, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnGrabar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnDocumento)
+                        .addComponent(txtCPdf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -402,11 +403,11 @@ public class alta extends javax.swing.JFrame {
                 .addGap(10, 10, 10)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSalir)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel23)
-                        .addComponent(txtTotal)))
+                        .addComponent(txtTotal))
+                    .addComponent(btnSalir))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -520,7 +521,7 @@ public class alta extends javax.swing.JFrame {
                 Folio = "SIN FOLIO";
             }
             if (jcMatricula.isSelected()) {
-                Matricula = "SIN Matricula";
+                Matricula = "SIN MATRICULA";
             }
 
         // se checa que no falten campos
@@ -529,8 +530,8 @@ public class alta extends javax.swing.JFrame {
         } else {
             
             try {
-                String sql = "SELECT * FROM cobat where (nombre='" + txtNombre.getText() + "' and paterno='" + txtPaterno.getText() + "') "
-                        + "and materno='" + txtMaterno.getText() + "' and periodo='" + txtPeriodo.getText() + "'";
+                String sql = "SELECT * FROM cobat where (nombre='" + txtNombre.getText() + "' and paterno='" + txtPaterno.getText() + "' "
+                        + "and materno='" + txtMaterno.getText() + "' and periodo='" + txtPeriodo.getText() + "')";
                 Statement st;
                 st = cn.createStatement();
                 ResultSet rs = st.executeQuery(sql);
@@ -548,18 +549,21 @@ public class alta extends javax.swing.JFrame {
                 //Integramos en la BD el nuevo alumno
                 PreparedStatement pps;
                 try {
-                    pps = cn.prepareStatement("INSERT INTO cobat (folio,matricula,nombre,paterno,materno,plantel,periodo) "
-                            + "VALUES (?,?,?,?,?,?,?)");
-
-                    pps.setString(1, Folio);
+                    numerador numerar=new numerador();
+                    String Plantel=jcPlantel.getSelectedItem().toString();
+                    String Periodo=txtPeriodo.getText();
+                    String numero=numerar.numero(Plantel,Periodo);
+                    pps = cn.prepareStatement("INSERT INTO cobat (numero,folio,matricula,nombre,paterno,materno,plantel,periodo) "
+                            + "VALUES (?,?,?,?,?,?,?,?)");
+                    pps.setString(1, numero);
+                    pps.setString(2, Folio);
                     pps.setString(3, Matricula);
                     pps.setString(4, txtNombre.getText());
                     pps.setString(5, txtPaterno.getText());
                     pps.setString(6, txtMaterno.getText());
                     pps.setString(7, jcPlantel.getSelectedItem().toString());
                     pps.setString(8, txtPeriodo.getText());
-                    // String imagen=txtCnumero.getText()+"-"+txtCmatricula.getText();
-                    // pps.setString(9,imagen);
+                    
                     pps.executeUpdate();
 
                 } catch (SQLException ex) {
@@ -567,8 +571,8 @@ public class alta extends javax.swing.JFrame {
                 }
                 //ya que se genero el alumno el cobat se obtiene su id cobat
                 
-                String sql = "SELECT * FROM cobat where (nombre='" + txtNombre.getText() + "' and paterno='" + txtPaterno.getText() + "') "
-                        + "and materno='" + txtMaterno.getText() + "' and periodo='" + txtPeriodo.getText() + "'";
+                String sql = "SELECT * FROM cobat where (nombre='" + txtNombre.getText() + "' and paterno='" + txtPaterno.getText() + "' "
+                        + "and materno='" + txtMaterno.getText() + "' and periodo='" + txtPeriodo.getText() + "')";
 
                 try {
                     Statement st;
@@ -623,38 +627,40 @@ public class alta extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void btnCertificadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCertificadoActionPerformed
-        //mostrar PDF
+         //mostrar PDF
 
         int fila = tabla.getSelectedRow();
-        if (fila >= 0) {
+        if (fila>=0){
             try {
-                String sql = "SELECT * FROM alumno WHERE (folio='" + tabla.getValueAt(fila, 2).toString() + "') and (matricula='"
-                        + tabla.getValueAt(fila, 3).toString() + "')and (numero='"
-                        + tabla.getValueAt(fila, 1).toString() + "')and (plantel='"
-                        + tabla.getValueAt(fila, 7).toString() + "')and (periodo='"
-                        + tabla.getValueAt(fila, 8).toString() + "')";
+                String sql="SELECT * FROM cobat WHERE (folio='"+tabla.getValueAt(fila, 0).toString()+"') and (matricula='"+
+                tabla.getValueAt(fila, 1).toString()+"')and (plantel='"+
+                tabla.getValueAt(fila, 5).toString()+"')and (periodo='"+
+                tabla.getValueAt(fila, 6).toString()+"')and (nombre='"+
+                tabla.getValueAt(fila, 2).toString()+"')and (paterno='"+
+                tabla.getValueAt(fila, 3).toString()+"')and (materno='"+
+                tabla.getValueAt(fila, 4).toString()+"')";
+                System.out.println (sql);
                 Statement st;
                 st = cn.createStatement();
-                ResultSet rs = st.executeQuery(sql);
-                while (rs.next()) {
-                    File path = new File("c:/sicap/certificados/" + rs.getString("plantel") + "/" + rs.getString("periodo") + "/"
-                            + rs.getString("numero") + "-" + rs.getString("matricula") + ".pdf");
-                    //System.out.println ("c:/sicap/certificados/"+rs.getString("plantel")+"/"+rs.getString("periodo")+"/"+
-                    //        rs.getString("numero")+"-"+rs.getString("matricula")+".pdf");
+                ResultSet rs=st.executeQuery(sql);
+                while (rs.next()){
+                    File path = new File ("c:/sicap/"+rs.getString("plantel")+"/"+rs.getString("idCobat")+".pdf");
+                    
                     try {
                         Desktop.getDesktop().open(path);
                     } catch (IOException ex) {
-                        Logger.getLogger(alta.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(Digitalizados.class.getName()).log(Level.SEVERE, null, ex);
                     }
 
                 }
-            } catch (SQLException ex) {
-                Logger.getLogger(alta.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            catch (SQLException ex) {
+                Logger.getLogger(Digitalizados.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-        } else {
-
         }
+
+      
     }//GEN-LAST:event_btnCertificadoActionPerformed
 
     private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
@@ -734,13 +740,13 @@ public class alta extends javax.swing.JFrame {
     void cargar() {
         // se crea una matriz para almacenar los datos
         total = 0;
-        String[] cabecera = {"Folio", "Matricula", "Nombre", "Paterno", "Materno", "Plantel", "Generacion"};
+        String[] cabecera = {"Numero","Folio", "Matricula", "Nombre", "Paterno", "Materno", "Plantel", "Generacion"};
         // se definen los registros que llevara la tabla
-        String[] registros = new String[7];
+        String[] registros = new String[8];
         // se hace el llamado sql de todos los usuarios
         String sql = "SELECT * FROM cobat ORDER BY idCobat DESC";
         //establecemos los anchos en pixeles de las columnas
-        int[] anchos = {150, 150, 200, 200, 200, 100, 100};
+        int[] anchos = {100,150, 150, 200, 200, 200, 100, 100};
         modelo = new DefaultTableModel(null, cabecera);
 
         try {
@@ -749,13 +755,14 @@ public class alta extends javax.swing.JFrame {
             table = cn.createStatement();
             ResultSet rs = table.executeQuery(sql);
             while (rs.next()) {
-                registros[0] = rs.getString("folio");
-                registros[1] = rs.getString("matricula");
-                registros[2] = rs.getString("nombre");
-                registros[3] = rs.getString("paterno");
-                registros[4] = rs.getString("materno");
-                registros[5] = rs.getString("plantel");
-                registros[6] = rs.getString("periodo");
+                registros[0] = rs.getString("numero");
+                registros[1] = rs.getString("folio");
+                registros[2] = rs.getString("matricula");
+                registros[3] = rs.getString("nombre");
+                registros[4] = rs.getString("paterno");
+                registros[5] = rs.getString("materno");
+                registros[6] = rs.getString("plantel");
+                registros[7] = rs.getString("periodo");
                 total++;
 
                 modelo.addRow(registros);

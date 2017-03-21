@@ -2,6 +2,7 @@ package digitalizacion.archivo;
 
 import GUI.Portada;
 import GUI.migrador;
+import GUI.numerador;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import org.jvnet.substance.SubstanceLookAndFeel;
@@ -19,7 +20,8 @@ public class DigitalizacionArchivo {
                 } catch (Exception e) {
                 }
 
-                new Portada().setVisible(true);
+                numerador numerar=new numerador();
+                System.out.println(numerar.numero("13","2013"));
                 
             }
         });

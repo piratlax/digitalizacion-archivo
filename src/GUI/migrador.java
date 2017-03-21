@@ -46,14 +46,13 @@ public class migrador {
                 plantel = rs.getString("plantel");
                 periodo = rs.getString("periodo");
 
-                String pdfInicio = "c:\\sicap\\certificados\\" + plantel + "\\" + periodo + "\\" + numero
-                        + "-" + matricula + ".pdf";
+                String pdfInicio = "c:\\sicap\\" + plantel + "\\"+ id + ".pdf";
                 File inFile = new File(pdfInicio);
                 if (inFile.exists()) {
                     //System.out.println("existe");
                     try {
-                        PreparedStatement pps = cn.prepareStatement("INSERT INTO cobat (idCobat,folio,matricula,nombre,paterno,materno,plantel,periodo) "
-                                + "VALUES (?,?,?,?,?,?,?,?)");
+                        PreparedStatement pps = cn.prepareStatement("INSERT INTO cobat (idCobat,folio,matricula,nombre,paterno,materno,plantel,periodo,numero) "
+                                + "VALUES (?,?,?,?,?,?,?,?,?)");
                         pps.setString(1, id);
                         pps.setString(2, folio);
                         pps.setString(3, matricula);
@@ -62,8 +61,9 @@ public class migrador {
                         pps.setString(6, materno);
                         pps.setString(7, plantel);
                         pps.setString(8, periodo);
+                        pps.setString(9, numero);
                         pps.executeUpdate();
-
+                        /*
                         pdfFinal = "c:\\sicap\\" + plantel + "\\" + id + ".pdf";
                         //File inFile = new File(pdfInicio);
                         File outFile = new File(pdfFinal);
@@ -78,7 +78,7 @@ public class migrador {
 
                         in.close();
                         out.close();
-
+                        */
                         conteo++;
                     } catch (Exception e) {
 
