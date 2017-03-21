@@ -30,7 +30,8 @@ public class alta extends javax.swing.JFrame {
     public alta() {
         initComponents();
         this.setLocationRelativeTo(null);
-
+        btnActualizar.setEnabled(false);
+        btnCancelar.setEnabled(false);
         cargar();
     }
 
@@ -65,6 +66,8 @@ public class alta extends javax.swing.JFrame {
         jcFolio = new javax.swing.JCheckBox();
         jcMatricula = new javax.swing.JCheckBox();
         jcPlantel = new javax.swing.JComboBox<>();
+        txtIdCobat = new javax.swing.JLabel();
+        txtNumero = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabla = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
@@ -87,6 +90,7 @@ public class alta extends javax.swing.JFrame {
         btnActualizar = new javax.swing.JButton();
         btnBorrar = new javax.swing.JButton();
         btnCertificado = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Sistema de Captura de Certificados");
@@ -133,29 +137,27 @@ public class alta extends javax.swing.JFrame {
 
         jcPlantel.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "AGUSTIN MELGAR", "AMADO NERVO", "BELISARIO DOMINGUEZ PALENCIA", "EMILIANO ZAPATA", "GABINO PALMA", "HEROES DE INDEPENDENCIA", "IESE", "INDEPENDENCIA CARMEN TEQUEXQUITLA", "INSTITUTO PAIDEIA", "JOSE MARIA MORELOS", "MIGUEL HIDALGO", "PREPARATORIA DE PUEBLA", "TRINIDAD SANTOS", " ", " ", " ", " " }));
 
+        txtIdCobat.setForeground(new java.awt.Color(204, 204, 204));
+        txtIdCobat.setText("Id");
+
+        txtNumero.setForeground(new java.awt.Color(204, 204, 204));
+        txtNumero.setText("No");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(10, 10, 10)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel10)
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel12)
-                                .addGap(126, 126, 126)
-                                .addComponent(jLabel13))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(txtFolio, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jcFolio)
-                                .addGap(27, 27, 27)))
+                        .addGap(40, 40, 40)
+                        .addComponent(jLabel12)
+                        .addGap(126, 126, 126)
+                        .addComponent(jLabel13)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addGap(0, 148, Short.MAX_VALUE)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addComponent(jLabel11)
@@ -168,7 +170,12 @@ public class alta extends javax.swing.JFrame {
                                         .addGap(18, 18, 18)
                                         .addComponent(txtPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(btnGrabar)
+                                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                            .addComponent(btnGrabar)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(txtIdCobat, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGap(28, 28, 28)
+                                            .addComponent(txtNumero))
                                         .addGroup(jPanel2Layout.createSequentialGroup()
                                             .addComponent(jLabel15)
                                             .addGap(18, 18, 18)
@@ -185,9 +192,18 @@ public class alta extends javax.swing.JFrame {
                                 .addGap(7, 7, 7)
                                 .addComponent(txtCPdf, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(26, 26, 26)
-                                .addComponent(txtPaterno, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addGap(40, 40, 40)
+                                        .addComponent(jLabel10)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(txtFolio, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jcFolio))
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(26, 26, 26)
+                                        .addComponent(txtPaterno, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(txtMaterno, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE))))
@@ -219,7 +235,10 @@ public class alta extends javax.swing.JFrame {
                     .addComponent(jcPlantel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnGrabar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnGrabar, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtIdCobat)
+                        .addComponent(txtNumero))
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnDocumento)
                         .addComponent(txtCPdf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -264,9 +283,10 @@ public class alta extends javax.swing.JFrame {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel18)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtBplantel, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(txtBplantel, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel19)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -347,6 +367,13 @@ public class alta extends javax.swing.JFrame {
             }
         });
 
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -356,10 +383,12 @@ public class alta extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(btnActualizar)
                 .addGap(18, 18, 18)
-                .addComponent(btnBorrar)
+                .addComponent(btnCancelar)
                 .addGap(18, 18, 18)
+                .addComponent(btnBorrar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnCertificado)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(22, 22, 22))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -367,6 +396,7 @@ public class alta extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(btnModificar, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
                     .addComponent(btnActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnBorrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnCertificado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -430,12 +460,15 @@ public class alta extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDocumentoActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-
+        btnCancelar.setEnabled(true);
         btnActualizar.setEnabled(true);
+        btnModificar.setEnabled(false);
+        btnGrabar.setEnabled(false);
         limpiar();
         int fila = tabla.getSelectedRow();
         if (fila >= 0) {
-
+            txtIdCobat.setText(tabla.getValueAt(fila,0).toString() );
+            txtNumero.setText(tabla.getValueAt(fila,1).toString() );
             txtFolio.setText(tabla.getValueAt(fila, 2).toString());
             txtMatricula.setText(tabla.getValueAt(fila, 3).toString());
             txtNombre.setText(tabla.getValueAt(fila, 4).toString());
@@ -445,19 +478,28 @@ public class alta extends javax.swing.JFrame {
             txtPeriodo.setText(tabla.getValueAt(fila, 8).toString());
 
         } else {
-
+            JOptionPane.showMessageDialog(this,"Selecciona un elemento de la tabla");
+            btnModificar.setEnabled(true);
+            btnCancelar.setEnabled(false);
+            btnActualizar.setEnabled(false);
+            btnGrabar.setEnabled(true);
         }
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        String[] titulos = {"id", "Numero", "Folio", "Matricula", "Nombre", "Paterno", "Materno", "Plantel", "Generacion"};
+        total=0;
+        String[] titulos = {"id","Numero", "Folio", "Matricula", "Nombre", "Paterno", "Materno", "Plantel", "Generacion"};
         String[] registros = new String[9];
-        String sql = "SELECT * FROM alumno WHERE (nombre like '%" + txtBnombre.getText() + "%')"
+        String sql = "SELECT * FROM cobat WHERE (nombre like '%" + txtBnombre.getText() + "%')"
                 + "and (paterno like '%" + txtBpaterno.getText() + "%')"
                 + "and (materno like '%" + txtBmaterno.getText() + "%')"
                 + "and (plantel like '%" + txtBplantel.getText() + "%')"
                 + "and (periodo like '%" + txtBperiodo.getText() + "%')";
 
+        modelo = new DefaultTableModel(null, titulos);
+        
+         //establecemos los anchos en pixeles de las columnas
+        int[] anchos = {0,50,100, 150, 150, 150, 150, 100, 150};
         modelo = new DefaultTableModel(null, titulos);
 
         try {
@@ -466,7 +508,7 @@ public class alta extends javax.swing.JFrame {
             table = cn.createStatement();
             ResultSet rs = table.executeQuery(sql);
             while (rs.next()) {
-                registros[0] = rs.getString("id");
+                registros[0] = rs.getString("idCobat");
                 registros[1] = rs.getString("numero");
                 registros[2] = rs.getString("folio");
                 registros[3] = rs.getString("matricula");
@@ -475,12 +517,22 @@ public class alta extends javax.swing.JFrame {
                 registros[6] = rs.getString("materno");
                 registros[7] = rs.getString("plantel");
                 registros[8] = rs.getString("periodo");
+                total++;
 
                 modelo.addRow(registros);
 
             }
             tabla.setModel(modelo);
-
+            for (int i = 0; i < titulos.length; i++) {
+                tabla.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
+                tabla.getColumnModel().getColumn(i).setMaxWidth(anchos[i]);
+                tabla.getColumnModel().getColumn(i).setMinWidth(anchos[i]);
+                tabla.getColumnModel().getColumn(i).setWidth(anchos[i]);
+                tabla.setFont(new java.awt.Font("Tahoma", 0, 12));
+            }
+           
+            
+            txtTotal.setText(Integer.toString(total));
         } catch (SQLException ex) {
             System.out.println("Sin poder ejecutar el query a la tabla");
         }
@@ -632,13 +684,7 @@ public class alta extends javax.swing.JFrame {
         int fila = tabla.getSelectedRow();
         if (fila>=0){
             try {
-                String sql="SELECT * FROM cobat WHERE (folio='"+tabla.getValueAt(fila, 0).toString()+"') and (matricula='"+
-                tabla.getValueAt(fila, 1).toString()+"')and (plantel='"+
-                tabla.getValueAt(fila, 5).toString()+"')and (periodo='"+
-                tabla.getValueAt(fila, 6).toString()+"')and (nombre='"+
-                tabla.getValueAt(fila, 2).toString()+"')and (paterno='"+
-                tabla.getValueAt(fila, 3).toString()+"')and (materno='"+
-                tabla.getValueAt(fila, 4).toString()+"')";
+                String sql="SELECT * FROM cobat WHERE idCobat='"+tabla.getValueAt(fila, 0).toString()+"' ";
                 System.out.println (sql);
                 Statement st;
                 st = cn.createStatement();
@@ -658,6 +704,8 @@ public class alta extends javax.swing.JFrame {
                 Logger.getLogger(Digitalizados.class.getName()).log(Level.SEVERE, null, ex);
             }
 
+        }else {
+            JOptionPane.showMessageDialog(this, "Selecciona un alumno");
         }
 
       
@@ -673,7 +721,7 @@ public class alta extends javax.swing.JFrame {
 
         }
         try {
-            String sql = "DELETE FROM alumno WHERE id='" + idBorrar + "'";
+            String sql = "DELETE FROM cobat WHERE idCobat='" + idBorrar + "'";
             Statement st;
             st = cn.createStatement();
             st.executeUpdate(sql);
@@ -685,6 +733,20 @@ public class alta extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "no se elimino el elemento");
         }
     }//GEN-LAST:event_btnBorrarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+       btnGrabar.setEnabled(true);
+       btnModificar.setEnabled(true);
+       btnActualizar.setEnabled(false);
+       btnCancelar.setEnabled(false);
+       txtFolio.setText("");
+       txtMatricula.setText("");
+       txtPeriodo.setText("");
+       txtNombre.setText("");
+       txtMaterno.setText("");
+       txtPaterno.setText("");
+       txtCPdf.setText("");
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
     void limpiar() {
         jcFolio.setSelected(false);
@@ -740,13 +802,13 @@ public class alta extends javax.swing.JFrame {
     void cargar() {
         // se crea una matriz para almacenar los datos
         total = 0;
-        String[] cabecera = {"Numero","Folio", "Matricula", "Nombre", "Paterno", "Materno", "Plantel", "Generacion"};
+        String[] cabecera = {"id","Numero","Folio", "Matricula", "Nombre", "Paterno", "Materno", "Plantel", "Generacion"};
         // se definen los registros que llevara la tabla
-        String[] registros = new String[8];
+        String[] registros = new String[9];
         // se hace el llamado sql de todos los usuarios
         String sql = "SELECT * FROM cobat ORDER BY idCobat DESC";
         //establecemos los anchos en pixeles de las columnas
-        int[] anchos = {100,150, 150, 200, 200, 200, 100, 100};
+        int[] anchos = {0,50,100, 150, 150, 150, 150, 100, 150};
         modelo = new DefaultTableModel(null, cabecera);
 
         try {
@@ -755,14 +817,15 @@ public class alta extends javax.swing.JFrame {
             table = cn.createStatement();
             ResultSet rs = table.executeQuery(sql);
             while (rs.next()) {
-                registros[0] = rs.getString("numero");
-                registros[1] = rs.getString("folio");
-                registros[2] = rs.getString("matricula");
-                registros[3] = rs.getString("nombre");
-                registros[4] = rs.getString("paterno");
-                registros[5] = rs.getString("materno");
-                registros[6] = rs.getString("plantel");
-                registros[7] = rs.getString("periodo");
+                registros[0] = rs.getString("idCobat");
+                registros[1] = rs.getString("numero");
+                registros[2] = rs.getString("folio");
+                registros[3] = rs.getString("matricula");
+                registros[4] = rs.getString("nombre");
+                registros[5] = rs.getString("paterno");
+                registros[6] = rs.getString("materno");
+                registros[7] = rs.getString("plantel");
+                registros[8] = rs.getString("periodo");
                 total++;
 
                 modelo.addRow(registros);
@@ -771,9 +834,13 @@ public class alta extends javax.swing.JFrame {
             tabla.setModel(modelo);
             for (int i = 0; i < cabecera.length; i++) {
                 tabla.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
+                tabla.getColumnModel().getColumn(i).setMaxWidth(anchos[i]);
+                tabla.getColumnModel().getColumn(i).setMinWidth(anchos[i]);
+                tabla.getColumnModel().getColumn(i).setWidth(anchos[i]);
                 tabla.setFont(new java.awt.Font("Tahoma", 0, 12));
             }
-
+           
+            
             txtTotal.setText(Integer.toString(total));
         } catch (SQLException ex) {
             System.out.println("Sin poder ejecutar el query a la tabla");
@@ -784,6 +851,7 @@ public class alta extends javax.swing.JFrame {
     private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnBorrar;
     private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnCertificado;
     private javax.swing.JButton btnDocumento;
     private javax.swing.JButton btnGrabar;
@@ -819,9 +887,11 @@ public class alta extends javax.swing.JFrame {
     private javax.swing.JTextField txtBplantel;
     private javax.swing.JTextField txtCPdf;
     private javax.swing.JTextField txtFolio;
+    private javax.swing.JLabel txtIdCobat;
     private javax.swing.JTextField txtMaterno;
     private javax.swing.JTextField txtMatricula;
     private javax.swing.JTextField txtNombre;
+    private javax.swing.JLabel txtNumero;
     private javax.swing.JTextField txtPaterno;
     private javax.swing.JTextField txtPeriodo;
     private javax.swing.JLabel txtTotal;
