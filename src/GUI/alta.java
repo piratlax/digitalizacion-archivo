@@ -467,8 +467,8 @@ public class alta extends javax.swing.JFrame {
         limpiar();
         int fila = tabla.getSelectedRow();
         if (fila >= 0) {
-            txtIdCobat.setText(tabla.getValueAt(fila,0).toString() );
-            txtNumero.setText(tabla.getValueAt(fila,1).toString() );
+            txtIdCobat.setText(tabla.getValueAt(fila, 0).toString());
+            txtNumero.setText(tabla.getValueAt(fila, 1).toString());
             txtFolio.setText(tabla.getValueAt(fila, 2).toString());
             txtMatricula.setText(tabla.getValueAt(fila, 3).toString());
             txtNombre.setText(tabla.getValueAt(fila, 4).toString());
@@ -478,7 +478,7 @@ public class alta extends javax.swing.JFrame {
             txtPeriodo.setText(tabla.getValueAt(fila, 8).toString());
 
         } else {
-            JOptionPane.showMessageDialog(this,"Selecciona un elemento de la tabla");
+            JOptionPane.showMessageDialog(this, "Selecciona un elemento de la tabla");
             btnModificar.setEnabled(true);
             btnCancelar.setEnabled(false);
             btnActualizar.setEnabled(false);
@@ -487,8 +487,8 @@ public class alta extends javax.swing.JFrame {
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        total=0;
-        String[] titulos = {"id","Numero", "Folio", "Matricula", "Nombre", "Paterno", "Materno", "Plantel", "Generacion"};
+        total = 0;
+        String[] titulos = {"id", "Numero", "Folio", "Matricula", "Nombre", "Paterno", "Materno", "Plantel", "Generacion"};
         String[] registros = new String[9];
         String sql = "SELECT * FROM cobat WHERE (nombre like '%" + txtBnombre.getText() + "%')"
                 + "and (paterno like '%" + txtBpaterno.getText() + "%')"
@@ -497,9 +497,9 @@ public class alta extends javax.swing.JFrame {
                 + "and (periodo like '%" + txtBperiodo.getText() + "%')";
 
         modelo = new DefaultTableModel(null, titulos);
-        
-         //establecemos los anchos en pixeles de las columnas
-        int[] anchos = {0,50,100, 150, 150, 150, 150, 100, 150};
+
+        //establecemos los anchos en pixeles de las columnas
+        int[] anchos = {0, 50, 100, 150, 150, 150, 150, 100, 150};
         modelo = new DefaultTableModel(null, titulos);
 
         try {
@@ -530,8 +530,7 @@ public class alta extends javax.swing.JFrame {
                 tabla.getColumnModel().getColumn(i).setWidth(anchos[i]);
                 tabla.setFont(new java.awt.Font("Tahoma", 0, 12));
             }
-           
-            
+
             txtTotal.setText(Integer.toString(total));
         } catch (SQLException ex) {
             System.out.println("Sin poder ejecutar el query a la tabla");
@@ -540,19 +539,92 @@ public class alta extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
-        try {
-            PreparedStatement pps = cn.prepareStatement("UPDATE alumno SET nombre='" + txtNombre.getText() + "',"
-                    + "paterno='" + txtPaterno.getText() + "',"
-                    + "materno='" + txtMaterno.getText() + "',"
-                    + "folio='" + txtFolio.getText() + "',"
-                    + "matricula='" + txtMatricula.getText() + "',"
-                    + "periodo='" + txtPeriodo.getText() + "' WHERE id=''");
-            pps.executeUpdate();
-            cargar();
-            limpiar();
-        } catch (SQLException ex) {
-            Logger.getLogger(alta.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        //pasamos a mayusculas
+        txtNombre.setText(txtNombre.getText().toUpperCase());
+        txtPaterno.setText(txtPaterno.getText().toUpperCase());
+        txtMaterno.setText(txtMaterno.getText().toUpperCase());
+        String pdfInicio = null;
+        String pdfFinal = null;
+        String Folio = txtFolio.getText();
+        String Matricula = txtMatricula.getText();
+        if (txtCPdf.getText().equals("")) {
+            if (jcFolio.isSelected()) {
+                Folio = "SIN FOLIO";
+            }
+            if (jcMatricula.isSelected()) {
+                Matricula = "SIN MATRICULA";
+            }
+
+            // se checa que no falten campos
+            if (txtNombre.getText().equals("") || txtPaterno.getText().equals("") || Folio.equals("") || Matricula.equals("")) {
+                JOptionPane.showMessageDialog(this, "te faltan datos por escribir");
+            } else {
+                try {
+                    PreparedStatement pps = cn.prepareStatement("UPDATE cobat SET nombre='" + txtNombre.getText() + "',"
+                            + "paterno='" + txtPaterno.getText() + "',"
+                            + "materno='" + txtMaterno.getText() + "',"
+                            + "folio='" + Folio + "',"
+                            + "matricula='" + Matricula + "',"
+                            + "periodo='" + txtPeriodo.getText() + "' WHERE idcobat='"+txtIdCobat.getText()+"'");
+                    pps.executeUpdate();
+                    cargar();
+                    limpiar();
+                    btnModificar.setEnabled(true);
+                    btnActualizar.setEnabled(false);
+                    btnCancelar.setEnabled(false);
+                    btnGrabar.setEnabled(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(alta.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        } 
+        
+        else {
+            //aqui se actualiza el pdf
+            
+            //se obtiene su id
+            String sql = "SELECT * FROM cobat where idcobat='" + txtIdCobat.getText() + "'";
+            try {
+                    Statement st;
+                    st = cn.createStatement();
+                    ResultSet rs = st.executeQuery(sql);
+                    while (rs.next()) {
+
+                        String txtPlantel = jcPlantel.getSelectedItem().toString();
+                        try {
+                            pdfInicio = txtCPdf.getText();
+                            pdfFinal = "c:\\sicap\\" + txtPlantel + "\\" + rs.getString("idCobat") + ".pdf";
+                            File inFile = new File(pdfInicio);
+                            File outFile = new File(pdfFinal);
+
+                            FileInputStream in = new FileInputStream(inFile);
+                            FileOutputStream out = new FileOutputStream(outFile);
+
+                            int c;
+                            while ((c = in.read()) != -1) {
+                                out.write(c);
+                            }
+
+                            in.close();
+                            out.close();
+                            inFile.delete();
+
+                            JOptionPane.showMessageDialog(null, "certificado integrado bien a la base de datos");
+                        } catch (Exception e) {
+                            JOptionPane.showMessageDialog(null, "no se grabo el certificado, error en subdirectorios");
+                        }
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(alta.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                    btnModificar.setEnabled(true);
+                    btnActualizar.setEnabled(false);
+                    btnCancelar.setEnabled(false);
+                    btnGrabar.setEnabled(true);
+                cargar();
+                limpiar();
+          }
+        
 
     }//GEN-LAST:event_btnActualizarActionPerformed
 
@@ -570,17 +642,17 @@ public class alta extends javax.swing.JFrame {
         String Matricula = txtMatricula.getText();
 
         if (jcFolio.isSelected()) {
-                Folio = "SIN FOLIO";
-            }
-            if (jcMatricula.isSelected()) {
-                Matricula = "SIN MATRICULA";
-            }
+            Folio = "SIN FOLIO";
+        }
+        if (jcMatricula.isSelected()) {
+            Matricula = "SIN MATRICULA";
+        }
 
         // se checa que no falten campos
-        if (txtNombre.getText().equals("") || txtPaterno.getText().equals("") || txtCPdf.getText().equals("") || Folio.equals("") || Matricula.equals("") ) {
+        if (txtNombre.getText().equals("") || txtPaterno.getText().equals("") || txtCPdf.getText().equals("") || Folio.equals("") || Matricula.equals("")) {
             JOptionPane.showMessageDialog(this, "te faltan datos por escribir");
         } else {
-            
+
             try {
                 String sql = "SELECT * FROM cobat where (nombre='" + txtNombre.getText() + "' and paterno='" + txtPaterno.getText() + "' "
                         + "and materno='" + txtMaterno.getText() + "' and periodo='" + txtPeriodo.getText() + "')";
@@ -601,10 +673,10 @@ public class alta extends javax.swing.JFrame {
                 //Integramos en la BD el nuevo alumno
                 PreparedStatement pps;
                 try {
-                    numerador numerar=new numerador();
-                    String Plantel=jcPlantel.getSelectedItem().toString();
-                    String Periodo=txtPeriodo.getText();
-                    String numero=numerar.numero(Plantel,Periodo);
+                    numerador numerar = new numerador();
+                    String Plantel = jcPlantel.getSelectedItem().toString();
+                    String Periodo = txtPeriodo.getText();
+                    String numero = numerar.numero(Plantel, Periodo);
                     pps = cn.prepareStatement("INSERT INTO cobat (numero,folio,matricula,nombre,paterno,materno,plantel,periodo) "
                             + "VALUES (?,?,?,?,?,?,?,?)");
                     pps.setString(1, numero);
@@ -615,14 +687,14 @@ public class alta extends javax.swing.JFrame {
                     pps.setString(6, txtMaterno.getText());
                     pps.setString(7, jcPlantel.getSelectedItem().toString());
                     pps.setString(8, txtPeriodo.getText());
-                    
+
                     pps.executeUpdate();
 
                 } catch (SQLException ex) {
                     Logger.getLogger(alta.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 //ya que se genero el alumno el cobat se obtiene su id cobat
-                
+
                 String sql = "SELECT * FROM cobat where (nombre='" + txtNombre.getText() + "' and paterno='" + txtPaterno.getText() + "' "
                         + "and materno='" + txtMaterno.getText() + "' and periodo='" + txtPeriodo.getText() + "')";
 
@@ -650,7 +722,7 @@ public class alta extends javax.swing.JFrame {
                             in.close();
                             out.close();
                             inFile.delete();
-                                                        
+
                             JOptionPane.showMessageDialog(null, "certificado integrado bien a la base de datos");
                         } catch (Exception e) {
                             JOptionPane.showMessageDialog(null, "no se grabo el certificado, error en subdirectorios");
@@ -679,19 +751,19 @@ public class alta extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void btnCertificadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCertificadoActionPerformed
-         //mostrar PDF
+        //mostrar PDF
 
         int fila = tabla.getSelectedRow();
-        if (fila>=0){
+        if (fila >= 0) {
             try {
-                String sql="SELECT * FROM cobat WHERE idCobat='"+tabla.getValueAt(fila, 0).toString()+"' ";
-                System.out.println (sql);
+                String sql = "SELECT * FROM cobat WHERE idCobat='" + tabla.getValueAt(fila, 0).toString() + "' ";
+                System.out.println(sql);
                 Statement st;
                 st = cn.createStatement();
-                ResultSet rs=st.executeQuery(sql);
-                while (rs.next()){
-                    File path = new File ("c:/sicap/"+rs.getString("plantel")+"/"+rs.getString("idCobat")+".pdf");
-                    
+                ResultSet rs = st.executeQuery(sql);
+                while (rs.next()) {
+                    File path = new File("c:/sicap/" + rs.getString("plantel") + "/" + rs.getString("idCobat") + ".pdf");
+
                     try {
                         Desktop.getDesktop().open(path);
                     } catch (IOException ex) {
@@ -699,16 +771,15 @@ public class alta extends javax.swing.JFrame {
                     }
 
                 }
-            }
-            catch (SQLException ex) {
+            } catch (SQLException ex) {
                 Logger.getLogger(Digitalizados.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-        }else {
+        } else {
             JOptionPane.showMessageDialog(this, "Selecciona un alumno");
         }
 
-      
+
     }//GEN-LAST:event_btnCertificadoActionPerformed
 
     private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
@@ -716,36 +787,40 @@ public class alta extends javax.swing.JFrame {
         int fila = tabla.getSelectedRow();
         if (fila >= 0) {
             idBorrar = tabla.getValueAt(fila, 0).toString();
+            int respuesta = JOptionPane.showConfirmDialog(this, "Se va a borrar el alumno, Continuo? ", "Confirmacion", 2);
+            //verificamos que informacion se va a agregar y si lo acepta se integra a la BD
+            if (respuesta == 0) {
+                try {
+                    String sql = "DELETE FROM cobat WHERE idCobat='" + idBorrar + "'";
+                    Statement st;
+                    st = cn.createStatement();
+                    st.executeUpdate(sql);
+                    JOptionPane.showMessageDialog(this, "Elemento Eliminado");
 
+                    limpiar();
+                    cargar();
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, "no se elimino el elemento");
+                }
+            }
         } else {
-
+            JOptionPane.showMessageDialog(null, "Selecciona un alumno");
         }
-        try {
-            String sql = "DELETE FROM cobat WHERE idCobat='" + idBorrar + "'";
-            Statement st;
-            st = cn.createStatement();
-            st.executeUpdate(sql);
-            JOptionPane.showMessageDialog(null, "Elemento Eliminado");
 
-            limpiar();
-            cargar();
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "no se elimino el elemento");
-        }
     }//GEN-LAST:event_btnBorrarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-       btnGrabar.setEnabled(true);
-       btnModificar.setEnabled(true);
-       btnActualizar.setEnabled(false);
-       btnCancelar.setEnabled(false);
-       txtFolio.setText("");
-       txtMatricula.setText("");
-       txtPeriodo.setText("");
-       txtNombre.setText("");
-       txtMaterno.setText("");
-       txtPaterno.setText("");
-       txtCPdf.setText("");
+        btnGrabar.setEnabled(true);
+        btnModificar.setEnabled(true);
+        btnActualizar.setEnabled(false);
+        btnCancelar.setEnabled(false);
+        txtFolio.setText("");
+        txtMatricula.setText("");
+        txtPeriodo.setText("");
+        txtNombre.setText("");
+        txtMaterno.setText("");
+        txtPaterno.setText("");
+        txtCPdf.setText("");
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     void limpiar() {
@@ -802,13 +877,13 @@ public class alta extends javax.swing.JFrame {
     void cargar() {
         // se crea una matriz para almacenar los datos
         total = 0;
-        String[] cabecera = {"id","Numero","Folio", "Matricula", "Nombre", "Paterno", "Materno", "Plantel", "Generacion"};
+        String[] cabecera = {"id", "Numero", "Folio", "Matricula", "Nombre", "Paterno", "Materno", "Plantel", "Generacion"};
         // se definen los registros que llevara la tabla
         String[] registros = new String[9];
         // se hace el llamado sql de todos los usuarios
         String sql = "SELECT * FROM cobat ORDER BY idCobat DESC";
         //establecemos los anchos en pixeles de las columnas
-        int[] anchos = {0,50,100, 150, 150, 150, 150, 100, 150};
+        int[] anchos = {0, 50, 100, 150, 150, 150, 150, 100, 150};
         modelo = new DefaultTableModel(null, cabecera);
 
         try {
@@ -839,8 +914,7 @@ public class alta extends javax.swing.JFrame {
                 tabla.getColumnModel().getColumn(i).setWidth(anchos[i]);
                 tabla.setFont(new java.awt.Font("Tahoma", 0, 12));
             }
-           
-            
+
             txtTotal.setText(Integer.toString(total));
         } catch (SQLException ex) {
             System.out.println("Sin poder ejecutar el query a la tabla");
