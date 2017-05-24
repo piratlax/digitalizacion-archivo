@@ -20,8 +20,8 @@ public class DigitalizacionArchivo {
                 } catch (Exception e) {
                 }
 
-                numerador numerar=new numerador();
-                System.out.println(numerar.numero("13","2013"));
+                Portada frm=new Portada();
+                frm.setVisible(true);
                 
             }
         });
